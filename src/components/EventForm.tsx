@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { FormEvent, useState } from 'react';
-import { Form, Button, Stack, FormGroup } from 'react-bootstrap';
-import DatePicker from 'react-datepicker';
+import { Form, Button, FormGroup } from 'react-bootstrap';
 import Toastify from 'toastify-js';
 
 function EventForm() {
@@ -24,7 +23,6 @@ function EventForm() {
 			name: name,
             email: email,
             tableSize: tableSize,
-			date: date,
 			startTime: startDateTime,
 			endTime: endDateTime,
 		};
@@ -63,50 +61,64 @@ function EventForm() {
 		}
 	};
 
-  function dateToString(date: Date | null): string {
-    if (date == null)
-      return ""
-    return date.toLocaleDateString();
-  }
-
+  // function dateToString(date: Date | null): string {
+  //   if (date == null)
+  //     return ""
+  //   return date.toLocaleDateString();
+  // }
+  //
 	return (
-		<Form onSubmit={handleSubmit}>
+		<Form id='form' onSubmit={handleSubmit}>
 			<Form.Group className='mb-3'>
-				<Form.Label>Name</Form.Label>
+				<Form.Label>What should we call you?</Form.Label>
 				<Form.Control
 					type='text'
 					placeholder='Enter your name'
 					value={name}
 					onChange={(e) => setName(e.target.value)}
+					required
 				/>
 			</Form.Group>
 
 			<Form.Group className='mb-3'>
-				<Form.Label>Email</Form.Label>
+				<Form.Label>
+					Provide a valid email, we will send you a confirmation link.
+				</Form.Label>
 				<Form.Control
 					type='text'
 					placeholder='Enter your email address'
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
+					required
 				/>
 			</Form.Group>
-            <FormGroup className='mb-3'>
-                <Form.Label>Type of booking (table size)</Form.Label>
-                <Form.Select>
-                    <option value='MICRO'>Micro (2 people)</option>
-                    <option value='SMALL'>Small (up to 4 people)</option>
-                    <option value='LARGE'>Large (up to 8 people)</option>
-                    <option value='DOUBLE_LARGE'>Double Large (up to 12 people)</option>
-                    <option value='EVERYTHING'>Store rental (20 to 32 people)</option>
-                </Form.Select>
-            </FormGroup>
-			<Stack direction='horizontal'>
+			<FormGroup className='mb-3'>
+				<Form.Label>Type of booking (table size)</Form.Label>
+				<Form.Select
+					onChange={(e) => setTableSize(e.target.value)}
+					defaultValue=''
+					required
+				>
+					<option value=''>Please select the table size</option>
+					<option value='MICRO'>Micro (2 people)</option>
+					<option value='SMALL'>Small (up to 4 people)</option>
+					<option value='LARGE'>Large (up to 8 people)</option>
+					<option value='DOUBLE_LARGE'>
+						Double Large (up to 12 people)
+					</option>
+					<option value='EVERYTHING'>
+						Store rental (20 to 32 people)
+					</option>
+				</Form.Select>
+			</FormGroup>
+			<div className='dates'>
 				<Form.Group className='mb-3'>
 					<Form.Label>Date</Form.Label>
 					<Form.Control
 						type='date'
 						value={date}
 						onChange={(e) => setDate(e.target.value)}
+						required
 					/>
 				</Form.Group>
 
@@ -119,6 +131,7 @@ function EventForm() {
 						max='23:50'
 						value={startTime}
 						onChange={(e) => setStartTime(e.target.value)}
+						required
 					/>
 				</Form.Group>
 				<Form.Group className='mb-3'>
@@ -130,11 +143,12 @@ function EventForm() {
 						max='23:59'
 						value={endTime}
 						onChange={(e) => setEndTime(e.target.value)}
+						required
 					/>
 				</Form.Group>
-			</Stack>
-			<Button variant='primary' type='submit'>
-				Submit Event
+			</div>
+			<Button variant='' className='btn-highlight'>
+				Book a table!
 			</Button>
 		</Form>
 	);
